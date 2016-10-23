@@ -8,8 +8,6 @@ namespace Transport.InProcess
     [ExportMetadata("Name", "InProcess")]
     public sealed class PassThroughTransportProvider : ITransportProvider
     {
-        
-
         public ITransport<T> Create<T>(Func<ITransportConfiguration, ITransportConfiguration> configuration)
         {
             return new PassThroughTransport<T>();

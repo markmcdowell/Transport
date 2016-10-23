@@ -2,6 +2,6 @@
 {
     public interface ITransportConfiguration
     {
-        ITransportConfiguration SingleInstance();
+        ITransportConfiguration SharedInstance();
     }
 }
