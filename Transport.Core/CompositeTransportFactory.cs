@@ -17,7 +17,7 @@ namespace Transport.Core
             _transports = transports;
         }
 
-        public ITransport<T> Create<T>(string name, Func<ITransportConfiguration, ITransportConfiguration> configuration)
+        public ITransport<T> Create<T>(string name, Func<ITransportConfiguration, ITransportConfiguration> configuration = null)
         {
             var transport = _transports.FirstOrDefault(t => t.Metadata.Name == name);
 

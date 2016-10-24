@@ -6,7 +6,7 @@ namespace Transport.Core
     {
         private bool _singleInstance;
 
-        public ITransportConfiguration SharedInstance()
+        public ITransportConfiguration InstancePerCall()
         {
             _singleInstance = true;
             return this;

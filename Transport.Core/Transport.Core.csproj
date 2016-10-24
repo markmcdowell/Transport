@@ -44,6 +44,7 @@
     <Compile Include="Adapters\PassThroughAdapter.cs" />
     <Compile Include="CompositeTransportFactory.cs" />
     <Compile Include="DefaultTransportConfiguration.cs" />
+    <Compile Include="KnownTransports.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransportExtensions.cs" />
     <Compile Include="Transports\ThrowOnNullOrEmptyTransport.cs" />
