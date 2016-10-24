@@ -6,7 +6,7 @@ namespace Transport.InProcess
 {
     [Export(typeof(ITransportProvider))]
     [ExportMetadata("Name", "InProcess")]
-    public sealed class PassThroughTransportProvider : ITransportProvider
+    public sealed class InProcessTransportProvider : ITransportProvider
     {
         public ITransport<T> Create<T>(Func<ITransportConfiguration, ITransportConfiguration> configuration)
         {

@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IAdapter.cs" />
+    <Compile Include="ITopicTranslator.cs" />
     <Compile Include="ITransport.cs" />
     <Compile Include="ITransportConfiguration.cs" />
     <Compile Include="ITransportFactory.cs" />

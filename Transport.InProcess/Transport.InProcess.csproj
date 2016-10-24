@@ -54,7 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PassThroughTransport.cs" />
-    <Compile Include="PassThroughTransportProvider.cs" />
+    <Compile Include="InProcessTransportProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

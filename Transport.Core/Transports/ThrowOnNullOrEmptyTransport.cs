@@ -3,7 +3,7 @@ using Transport.Interfaces;
 
 namespace Transport.Core.Transports
 {
-    public sealed class ThrowOnNullOrEmptyTransport<T> : ITransport<T>
+    internal sealed class ThrowOnNullOrEmptyTransport<T> : ITransport<T>
     {
         private readonly ITransport<T> _transportImplementation;
 
