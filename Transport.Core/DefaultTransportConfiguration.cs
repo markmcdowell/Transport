@@ -4,11 +4,11 @@ namespace Transport.Core
 {
     public sealed class DefaultTransportConfiguration : ITransportConfiguration
     {
-        private bool _singleInstance;
+        private bool _instancePerCall;
 
         public ITransportConfiguration InstancePerCall()
         {
-            _singleInstance = true;
+            _instancePerCall = true;
             return this;
         }        
     }
