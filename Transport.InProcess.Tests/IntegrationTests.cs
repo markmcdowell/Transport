@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using Transport.Core;
 using Transport.Interfaces;
@@ -25,7 +24,6 @@ namespace Transport.InProcess.Tests
             var catalog = new AggregateCatalog(inProcessCatalog, coreCatalog);
 
             var container = new CompositionContainer(catalog, CompositionOptions.DisableSilentRejection);
-            container.ComposeExportedValue(container);
 
             var transportFactory = container.GetExportedValue<ITransportFactory>();
 

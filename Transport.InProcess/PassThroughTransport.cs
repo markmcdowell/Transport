@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.ComponentModel.Composition;
 using System.Reactive.Subjects;
 using Transport.Interfaces;
 
 namespace Transport.InProcess
 {
-    [Export(InProcessConstants.Transports.PassThrough, typeof(ITransport<>))]
     internal sealed class PassThroughTransport<T> : ITransport<T>, IDisposable
     {
         private readonly ConcurrentDictionary<string, ISubject<T>> _streams = new ConcurrentDictionary<string, ISubject<T>>();
