@@ -9,9 +9,9 @@
 
         public static class Transports
         {
-            public const string NamedPipeClient = "NamedPipeClient";
+            public const string NamedPipeClient = "NamedPipe.Client";
 
-            public const string NamedPipeServer = "NamedPipeServer";
+            public const string NamedPipeServer = "NamedPipe.Server";
         }
     }
 }

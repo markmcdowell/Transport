@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using Transport.Interfaces;
 
@@ -17,7 +16,7 @@ namespace Transport.InProcess
             _compositionContainer = compositionContainer;
         }
 
-        public ITransport<T> Create<T>(Func<ITransportConfiguration, ITransportConfiguration> configuration)
+        public ITransport<T> Create<T>(ITransportDetails<T> transportDetails)
         {
             return _compositionContainer.GetExportedValue<ITransport<T>>(InProcessConstants.Transports.PassThrough);
         }

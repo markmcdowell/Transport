@@ -14,11 +14,6 @@ namespace Transport.Core.Transports
             _topicTranslator = topicTranslator;
         }
 
-        public void Dispose()
-        {
-            _transportImplementation.Dispose();
-        }
-
         public IObservable<T> Observe(string topic)
         {
             var newTopic = _topicTranslator.Translate(topic);

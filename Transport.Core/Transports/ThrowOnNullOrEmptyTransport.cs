@@ -12,11 +12,6 @@ namespace Transport.Core.Transports
             _transportImplementation = transportImplementation;
         }
 
-        public void Dispose()
-        {
-            _transportImplementation.Dispose();
-        }
-
         public IObservable<T> Observe(string topic)
         {
             if (string.IsNullOrEmpty(topic))

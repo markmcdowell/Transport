@@ -2,7 +2,7 @@
 
 namespace Transport.Interfaces
 {
-    public interface ITransport<T> : IDisposable
+    public interface ITransport<T>
     {
         IObservable<T> Observe(string topic);
 

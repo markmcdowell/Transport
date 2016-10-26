@@ -43,6 +43,7 @@
     <Compile Include="IAdapter.cs" />
     <Compile Include="ITopicTranslator.cs" />
     <Compile Include="ITransport.cs" />
+    <Compile Include="ITransportDetails.cs" />
     <Compile Include="ITransportConfiguration.cs" />
     <Compile Include="ITransportFactory.cs" />
     <Compile Include="ITransportMetadata.cs" />

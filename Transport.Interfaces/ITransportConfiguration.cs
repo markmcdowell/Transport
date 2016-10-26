@@ -1,7 +1,11 @@
 ﻿namespace Transport.Interfaces
 {
-    public interface ITransportConfiguration
+    public interface ITransportConfiguration<T>
     {
-        ITransportConfiguration InstancePerCall();
+        ITransportConfiguration<T> InstancePerCall();
+
+        ITransportConfiguration<T> Configuration(string jsonConfiguration);
+
+        ITransportConfiguration<T> Adapter(IAdapter<T, byte[]> adapter);
     }
 }

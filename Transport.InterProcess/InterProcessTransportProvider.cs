@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
+﻿using System.ComponentModel.Composition;
 using Transport.Interfaces;
 
 namespace Transport.InterProcess
@@ -9,17 +7,9 @@ namespace Transport.InterProcess
     [ExportMetadata("Name", InterProcessConstants.Names.Transport)]
     internal sealed class InterProcessTransportProvider : ITransportProvider
     {
-        private readonly CompositionContainer _compositionContainer;
-
-        [ImportingConstructor]
-        public InterProcessTransportProvider(CompositionContainer compositionContainer)
+        public ITransport<T> Create<T>(ITransportDetails<T> transportDetails)
         {
-            _compositionContainer = compositionContainer;
-        }
-
-        public ITransport<T> Create<T>(Func<ITransportConfiguration, ITransportConfiguration> configuration)
-        {
-            return _compositionContainer.GetExportedValue<ITransport<T>>(InterProcessConstants.Transports.NamedPipeClient);
+            return new NamedPipeClientTransport<T>(transportDetails.Adapter);
         }
     }
 }

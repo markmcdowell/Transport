@@ -17,11 +17,17 @@ namespace Transport.Core
             _transports = transports;
         }
 
-        public ITransport<T> Create<T>(string name, Func<ITransportConfiguration, ITransportConfiguration> configuration = null)
+        public ITransport<T> Create<T>(string name, Func<ITransportConfiguration<T>, ITransportConfiguration<T>> configuration = null)
         {
             var transport = _transports.FirstOrDefault(t => t.Metadata.Name == name);
 
-            return transport?.Value.Create<T>(configuration);
+            ITransportDetails<T> transportDetails;
+            if (configuration == null)
+                transportDetails = new DefaultTransportConfiguration<T>();
+            else
+                transportDetails = (ITransportDetails<T>)configuration(new DefaultTransportConfiguration<T>());
+
+            return transport?.Value.Create(transportDetails);
         }
     }
 }
