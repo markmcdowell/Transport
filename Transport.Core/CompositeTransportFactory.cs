@@ -19,13 +19,11 @@ namespace Transport.Core
 
         public ITransport<T> Create<T>(string name, Func<ITransportConfiguration<T>, ITransportConfiguration<T>> configuration = null)
         {
-            var transport = _transports.FirstOrDefault(t => t.Metadata.Name == name);
+            configuration = configuration ?? (c => c);
+            
+            var transportDetails = (ITransportDetails<T>)configuration(new DefaultTransportConfiguration<T>());
 
-            ITransportDetails<T> transportDetails;
-            if (configuration == null)
-                transportDetails = new DefaultTransportConfiguration<T>();
-            else
-                transportDetails = (ITransportDetails<T>)configuration(new DefaultTransportConfiguration<T>());
+            var transport = _transports.FirstOrDefault(t => t.Metadata.Name == name);
 
             return transport?.Value.Create(transportDetails);
         }
