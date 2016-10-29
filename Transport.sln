@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport.InProcess", "Tran
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport.InProcess.Tests", "Transport.InProcess.Tests\Transport.InProcess.Tests.csproj", "{025A37F7-3A79-4483-BDA4-F98F6E065098}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport.InterProcess", "Transport.InterProcess\Transport.InterProcess.csproj", "{E3FD6ADF-FB06-49DD-B7F1-603825D62178}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport.Pipes", "Transport.Pipes\Transport.Pipes.csproj", "{37A04156-70A6-4A4C-9F80-B61A701DBE6C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +37,10 @@ Global
 		{025A37F7-3A79-4483-BDA4-F98F6E065098}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{025A37F7-3A79-4483-BDA4-F98F6E065098}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{025A37F7-3A79-4483-BDA4-F98F6E065098}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E3FD6ADF-FB06-49DD-B7F1-603825D62178}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E3FD6ADF-FB06-49DD-B7F1-603825D62178}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E3FD6ADF-FB06-49DD-B7F1-603825D62178}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E3FD6ADF-FB06-49DD-B7F1-603825D62178}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37A04156-70A6-4A4C-9F80-B61A701DBE6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37A04156-70A6-4A4C-9F80-B61A701DBE6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37A04156-70A6-4A4C-9F80-B61A701DBE6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37A04156-70A6-4A4C-9F80-B61A701DBE6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

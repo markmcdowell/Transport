@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E3FD6ADF-FB06-49DD-B7F1-603825D62178}</ProjectGuid>
+    <ProjectGuid>{37A04156-70A6-4A4C-9F80-B61A701DBE6C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Transport.InterProcess</RootNamespace>
-    <AssemblyName>Transport.InterProcess</AssemblyName>
+    <RootNamespace>Transport.Pipes</RootNamespace>
+    <AssemblyName>Transport.Pipes</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -53,20 +53,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InterProcessConstants.cs" />
-    <Compile Include="InterProcessTransportProvider.cs" />
-    <Compile Include="NamedPipeClientTransport.cs" />
-    <Compile Include="NamedPipeServerTransport.cs" />
+    <Compile Include="NamedPipeClient.cs" />
+    <Compile Include="IPipe.cs" />
+    <Compile Include="IPipeProvider.cs" />
+    <Compile Include="NamedPipeServer.cs" />
+    <Compile Include="NamedPipeServerProvider.cs" />
+    <Compile Include="NamedPipeServerTransportProvider.cs" />
+    <Compile Include="PipeConstants.cs" />
+    <Compile Include="NamedPipeClientTransportProvider.cs" />
+    <Compile Include="NamedPipeClientProvider.cs" />
+    <Compile Include="PipeTransport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Transport.Interfaces\Transport.Interfaces.csproj">
       <Project>{C5D62CCD-B087-4937-8A6F-3845641894F1}</Project>
       <Name>Transport.Interfaces</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
