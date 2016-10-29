@@ -2,7 +2,7 @@
 {
     internal static class PipeConstants
     {
-        public static class Pipes
+        public static class Transports
         {
             public const string Client = "NamedPipe.Client";
 

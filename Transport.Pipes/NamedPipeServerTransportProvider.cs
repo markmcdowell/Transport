@@ -4,7 +4,7 @@ using Transport.Interfaces;
 namespace Transport.Pipes
 {
     [Export(typeof(ITransportProvider))]
-    [ExportMetadata("Name", PipeConstants.Pipes.Server)]
+    [ExportMetadata("Name", PipeConstants.Transports.Server)]
     internal sealed class NamedPipeServerTransportProvider : ITransportProvider
     {
         private readonly IPipeProvider _pipeProvider;

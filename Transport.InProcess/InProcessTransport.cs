@@ -5,10 +5,15 @@ using Transport.Interfaces;
 
 namespace Transport.InProcess
 {
-    internal sealed class PassThroughTransport<T> : ITransport<T>, IDisposable
+    internal sealed class InProcessTransport<T> : ITransport<T>, IDisposable
     {
         private readonly ConcurrentDictionary<string, ISubject<T>> _streams = new ConcurrentDictionary<string, ISubject<T>>();
-        private readonly Func<string, ISubject<T>> _streamFactory = t => new Subject<T>();
+        private readonly Func<string, ISubject<T>> _streamFactory;
+
+        public InProcessTransport(Func<string, ISubject<T>> streamFactory)
+        {
+            _streamFactory = streamFactory;
+        }
 
         public IObservable<T> Observe(string topic)
         {

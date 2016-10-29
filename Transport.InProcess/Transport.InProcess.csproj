@@ -54,9 +54,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InProcessConstants.cs" />
-    <Compile Include="PassThroughTransport.cs" />
-    <Compile Include="InProcessTransportProvider.cs" />
+    <Compile Include="InProcessTransport.cs" />
+    <Compile Include="PassThroughTransportProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReplayLastTransportProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Transport.Interfaces\Transport.Interfaces.csproj">

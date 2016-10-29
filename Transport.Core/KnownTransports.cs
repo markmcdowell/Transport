@@ -2,6 +2,18 @@
 {
     public static class KnownTransports
     {
-        public const string InProcess = "InProcess";
+        public static class InProcess
+        {
+            public const string PassThrough = "InProcess.PassThrough";
+
+            public const string ReplayLast = "InProcess.ReplayLast";
+        }
+
+        public static class Pipes
+        {
+            public const string Client = "NamedPipe.Client";
+
+            public const string Server = "NamedPipe.Server";
+        }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.Composition.Hosting;
-using System.Reactive.Linq;
 using Transport.Core;
 using Transport.Interfaces;
 using Xunit;
@@ -20,7 +19,7 @@ namespace Transport.InProcess.Tests
         [Fact]
         public void ShouldBeAbleToCreateTransport()
         {
-            var inProcessCatalog = new AssemblyCatalog(typeof(InProcessTransportProvider).Assembly);
+            var inProcessCatalog = new AssemblyCatalog(typeof(PassThroughTransportProvider).Assembly);
             var coreCatalog = new AssemblyCatalog(typeof(TransportExtensions).Assembly);
             var catalog = new AggregateCatalog(inProcessCatalog, coreCatalog);
 
@@ -28,19 +27,17 @@ namespace Transport.InProcess.Tests
 
             var transportFactory = container.GetExportedValue<ITransportFactory>();
 
-            var transport = transportFactory.Create<string>(KnownTransports.InProcess);
+            var transport = transportFactory.Create<string>(KnownTransports.InProcess.PassThrough);
             transport.Observe("topic/new")
-                     .Publish()
-                     .RefCount()
                      .Subscribe(s => _output.WriteLine(s));
             transport.Publish("topic/new")
                      .OnNext("hello world!");
 
-            var intTransport = transportFactory.Create<int>(KnownTransports.InProcess);
-            intTransport.Observe("topic/new")
-                        .Subscribe(s => _output.WriteLine(s.ToString()));
+            var intTransport = transportFactory.Create<int>(KnownTransports.InProcess.ReplayLast);            
             intTransport.Publish("topic/new")
                         .OnNext(10);
+            intTransport.Observe("topic/new")
+                        .Subscribe(s => _output.WriteLine(s.ToString()));
         }
     }
 }
