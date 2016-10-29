@@ -1,18 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.IO.Pipes;
+using System.Linq;
 using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace Transport.Pipes
 {
-    [Export(PipeConstants.Pipes.Client, typeof(IPipe))]
     internal sealed class NamedPipeClient : IPipe
     {
         private readonly NamedPipeClientStream _pipe;
+        private readonly byte[] _buffer = new byte[1024 * 16];
 
         public NamedPipeClient(string name)
         {
+            Name = name;
             _pipe = new NamedPipeClientStream(".", name, PipeDirection.InOut)
             {
                 ReadMode = PipeTransmissionMode.Message
@@ -24,6 +26,13 @@ namespace Transport.Pipes
             _pipe.Dispose();
         }
 
+        public string Name { get; }
+
+        public void Connect()
+        {
+            _pipe.Connect();
+        }
+
         public void Send(byte[] data)
         {
             _pipe.Write(data, 0, data.Length);
@@ -31,24 +40,12 @@ namespace Transport.Pipes
 
         public IObservable<byte[]> Receive()
         {
-            return Observable.Create<byte[]>(o =>
-            {
-                var message = new List<byte>();
-                var messageBuffer = new byte[5];
-                do
-                {
-                    _pipe.Read(messageBuffer, 0, messageBuffer.Length);
-                    message.AddRange(messageBuffer);
-                    messageBuffer = new byte[messageBuffer.Length];
-                }
-                while (!_pipe.IsMessageComplete);
-
-                var bytes = message.ToArray();
-
-                o.OnNext(bytes);
-
-                return _pipe;
-            });
+            return Task.Factory
+                       .FromAsync((callback, state) => _pipe.BeginRead(_buffer, 0, _buffer.Length, callback, state),
+                                  result => _pipe.EndRead(result), this)
+                       .ToObservable()
+                       .Select(read => _buffer.Take(read).ToArray())
+                       .Repeat();
         }        
     }
 }

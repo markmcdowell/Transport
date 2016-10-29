@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition.Hosting;
+using System.Reactive.Linq;
 using Transport.Core;
 using Transport.Interfaces;
 using Xunit;
@@ -29,6 +30,8 @@ namespace Transport.InProcess.Tests
 
             var transport = transportFactory.Create<string>(KnownTransports.InProcess);
             transport.Observe("topic/new")
+                     .Publish()
+                     .RefCount()
                      .Subscribe(s => _output.WriteLine(s));
             transport.Publish("topic/new")
                      .OnNext("hello world!");

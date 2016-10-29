@@ -2,6 +2,6 @@
 {
     internal interface IPipeProvider
     {
-        IPipe GetOrCreate(string name);
+        IPipe GetOrCreate(string name, PipeType pipeType);
     }
 }

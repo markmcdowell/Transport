@@ -53,17 +53,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DisposeDelegatingPipe.cs" />
     <Compile Include="NamedPipeClient.cs" />
     <Compile Include="IPipe.cs" />
     <Compile Include="IPipeProvider.cs" />
     <Compile Include="NamedPipeServer.cs" />
-    <Compile Include="NamedPipeServerProvider.cs" />
     <Compile Include="NamedPipeServerTransportProvider.cs" />
     <Compile Include="PipeConstants.cs" />
     <Compile Include="NamedPipeClientTransportProvider.cs" />
-    <Compile Include="NamedPipeClientProvider.cs" />
+    <Compile Include="NamedPipeProvider.cs" />
+    <Compile Include="PipeExtensions.cs" />
     <Compile Include="PipeTransport.cs" />
+    <Compile Include="PipeType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RefCountedPipe.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,18 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.IO.Pipes;
+using System.Linq;
 using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace Transport.Pipes
 {
-    [Export(PipeConstants.Pipes.Server, typeof(IPipe))]
     internal sealed class NamedPipeServer : IPipe
     {
+        private readonly byte[] _buffer = new byte[1024 * 32];
         private readonly NamedPipeServerStream _pipe;
 
         public NamedPipeServer(string name)
         {
+            Name = name;
             _pipe = new NamedPipeServerStream(name, PipeDirection.InOut)
             {
                 ReadMode = PipeTransmissionMode.Message
@@ -24,31 +26,30 @@ namespace Transport.Pipes
             _pipe.Dispose();
         }
 
+        public string Name { get; }
+
+        public void Connect()
+        {
+        }
+
         public void Send(byte[] data)
         {
-            _pipe.Write(data, 0, data.Length);
+            if (_pipe.IsConnected)
+                _pipe.Write(data, 0, data.Length);
         }
 
         public IObservable<byte[]> Receive()
         {
-            return Observable.Create<byte[]>(o =>
-            {
-                var message = new List<byte>();
-                var messageBuffer = new byte[5];
-                do
-                {
-                    _pipe.Read(messageBuffer, 0, messageBuffer.Length);
-                    message.AddRange(messageBuffer);
-                    messageBuffer = new byte[messageBuffer.Length];
-                }
-                while (!_pipe.IsMessageComplete);
-
-                var bytes = message.ToArray();
-
-                o.OnNext(bytes);
-
-                return _pipe;
-            });
+            return Task.Factory
+                       .FromAsync((callback, state) => _pipe.BeginWaitForConnection(callback, state),
+                                  result => _pipe.EndWaitForConnection(result), null)
+                       .ContinueWith(t => Task.Factory
+                                              .FromAsync((callback, state) => _pipe.BeginRead(_buffer, 0, _buffer.Length, callback, state),
+                                                         result => _pipe.EndRead(result), this))
+                       .Unwrap()
+                       .ToObservable()
+                       .Select(read => _buffer.Take(read).ToArray())
+                       .Repeat();
         }
     }
 }

@@ -10,14 +10,14 @@ namespace Transport.Pipes
         private readonly IPipeProvider _pipeProvider;
 
         [ImportingConstructor]
-        public NamedPipeClientTransportProvider([Import(PipeConstants.Pipes.Client)]IPipeProvider pipeProvider)
+        public NamedPipeClientTransportProvider(IPipeProvider pipeProvider)
         {
             _pipeProvider = pipeProvider;
         }
 
         public ITransport<T> Create<T>(ITransportDetails<T> transportDetails)
         {
-            return new PipeTransport<T>(transportDetails.Adapter, _pipeProvider);
+            return new PipeTransport<T>(transportDetails.Adapter, _pipeProvider, PipeType.Client);
         }
     }
 }
