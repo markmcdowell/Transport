@@ -29,22 +29,23 @@ namespace Transport.Pipes
         {
         }
 
-        public void Send(byte[] data)
+        public async Task Send(byte[] data)
         {
             if (_pipe.IsConnected)
-                _pipe.Write(data, 0, data.Length);
+            {
+                await Task.Factory.FromAsync((callback, state) => _pipe.BeginWrite(data, 0, data.Length, callback, state),
+                                             result => _pipe.EndWrite(result), null);
+            }
         }
 
         public async Task<byte[]> Receive()
         {
             if (!_pipe.IsConnected)
-                await Task.Factory
-                          .FromAsync((callback, state) => _pipe.BeginWaitForConnection(callback, state),
-                                      result => _pipe.EndWaitForConnection(result), null);
+                await Task.Factory.FromAsync((callback, state) => _pipe.BeginWaitForConnection(callback, state),
+                                             result => _pipe.EndWaitForConnection(result), null);
 
-            var read = await Task.Factory
-                                 .FromAsync((callback, state) => _pipe.BeginRead(_buffer, 0, _buffer.Length, callback, state),
-                                                         result => _pipe.EndRead(result), null);
+            var read = await Task.Factory.FromAsync((callback, state) => _pipe.BeginRead(_buffer, 0, _buffer.Length, callback, state),
+                                                    result => _pipe.EndRead(result), null);
 
             return _buffer.Take(read).ToArray();
         }

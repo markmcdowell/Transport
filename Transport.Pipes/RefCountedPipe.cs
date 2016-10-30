@@ -32,12 +32,12 @@ namespace Transport.Pipes
             _pipe.Connect();
         }
 
-        public void Send(byte[] data)
+        public Task Send(byte[] data)
         {
             lock (_gate)
                 ++_count;
 
-            _pipe.Send(data);
+            return _pipe.Send(data);
         }
 
         public Task<byte[]> Receive()

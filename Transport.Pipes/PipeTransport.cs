@@ -48,7 +48,7 @@ namespace Transport.Pipes
             {
                 var bytes = _adapter.Adapt(data);
 
-                pipe.Send(bytes);
+                pipe.Send(bytes).Start();
             }, ex => pipe.Dispose(), () => pipe.Dispose());
         }
     }

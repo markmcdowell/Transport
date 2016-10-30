@@ -9,7 +9,7 @@ namespace Transport.Pipes
 
         void Connect();
 
-        void Send(byte[] data);
+        Task Send(byte[] data);
 
         Task<byte[]> Receive();
     }

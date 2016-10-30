@@ -31,20 +31,20 @@ namespace Transport.Pipes
                 _pipe.Connect();
         }
 
-        public void Send(byte[] data)
+        public async Task Send(byte[] data)
         {
             Connect();
 
-            _pipe.Write(data, 0, data.Length);
+            await Task.Factory.FromAsync((callback, state) => _pipe.BeginWrite(data, 0, data.Length, callback, state),
+                                         result => _pipe.EndWrite(result), null);
         }
 
         public async Task<byte[]> Receive()
         {
             Connect();
 
-            var length = await Task.Factory
-                                   .FromAsync((callback, state) => _pipe.BeginRead(_buffer, 0, _buffer.Length, callback, state),
-                                              result => _pipe.EndRead(result), null);
+            var length = await Task.Factory.FromAsync((callback, state) => _pipe.BeginRead(_buffer, 0, _buffer.Length, callback, state),
+                                                      result => _pipe.EndRead(result), null);
 
             return _buffer.Take(length).ToArray();
         }        
