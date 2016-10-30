@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport.InProcess.Tests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport.Pipes", "Transport.Pipes\Transport.Pipes.csproj", "{37A04156-70A6-4A4C-9F80-B61A701DBE6C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport.Pipes.Tests", "Transport.Pipes.Tests\Transport.Pipes.Tests.csproj", "{C9E60BA5-20BE-4B20-949E-C6F5D67DCEDE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,11 +43,16 @@ Global
 		{37A04156-70A6-4A4C-9F80-B61A701DBE6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37A04156-70A6-4A4C-9F80-B61A701DBE6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37A04156-70A6-4A4C-9F80-B61A701DBE6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9E60BA5-20BE-4B20-949E-C6F5D67DCEDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9E60BA5-20BE-4B20-949E-C6F5D67DCEDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9E60BA5-20BE-4B20-949E-C6F5D67DCEDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9E60BA5-20BE-4B20-949E-C6F5D67DCEDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{025A37F7-3A79-4483-BDA4-F98F6E065098} = {099608F9-8DE9-467C-B15B-1F37D2D4FB03}
+		{C9E60BA5-20BE-4B20-949E-C6F5D67DCEDE} = {099608F9-8DE9-467C-B15B-1F37D2D4FB03}
 	EndGlobalSection
 EndGlobal

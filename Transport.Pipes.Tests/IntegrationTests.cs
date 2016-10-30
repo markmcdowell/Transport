@@ -5,7 +5,7 @@ using Transport.Interfaces;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Transport.InProcess.Tests
+namespace Transport.Pipes.Tests
 {
     public sealed class IntegrationTests
     {
@@ -19,7 +19,7 @@ namespace Transport.InProcess.Tests
         [Fact]
         public void ShouldBeAbleToCreateTransport()
         {
-            var inProcessCatalog = new AssemblyCatalog(typeof(PassThroughTransportProvider).Assembly);
+            var inProcessCatalog = new AssemblyCatalog(typeof(PipeTransport<>).Assembly);
             var coreCatalog = new AssemblyCatalog(typeof(TransportExtensions).Assembly);
             var catalog = new AggregateCatalog(inProcessCatalog, coreCatalog);
 
@@ -27,17 +27,15 @@ namespace Transport.InProcess.Tests
 
             var transportFactory = container.GetExportedValue<ITransportFactory>();
 
-            var transport = transportFactory.Create<string>(KnownTransports.InProcess.PassThrough);
-            transport.Observe("topic/new")
-                     .Subscribe(s => _output.WriteLine(s));
-            transport.Publish("topic/new")
-                     .OnNext("hello!");
+            var serverTransport = transportFactory.Create<string>(KnownTransports.Pipes.Server);
+            serverTransport.Observe("topic/new")
+                           .Subscribe(s => serverTransport.Publish("topic/new").OnNext(s));
 
-            var intTransport = transportFactory.Create<int>(KnownTransports.InProcess.ReplayLast);            
-            intTransport.Publish("topic/new")
-                        .OnNext(10);
-            intTransport.Observe("topic/new")
-                        .Subscribe(s => _output.WriteLine(s.ToString()));
+            var clientTransport = transportFactory.Create<string>(KnownTransports.Pipes.Client);
+            clientTransport.Observe("topic/new")
+                           .Subscribe(s => _output.WriteLine(s));
+            clientTransport.Publish("topic/new")
+                           .OnNext("hello!");
         }
     }
 }
