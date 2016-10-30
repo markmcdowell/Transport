@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Transport.Pipes
 {
@@ -31,7 +32,7 @@ namespace Transport.Pipes
             _pipe.Send(data);
         }
 
-        public IObservable<byte[]> Receive()
+        public Task<byte[]> Receive()
         {
             return _pipe.Receive();
         }

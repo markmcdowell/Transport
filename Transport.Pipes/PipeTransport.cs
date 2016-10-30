@@ -2,6 +2,7 @@
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using Transport.Interfaces;
 
 namespace Transport.Pipes
@@ -26,6 +27,8 @@ namespace Transport.Pipes
             return Observable.Create<T>(o =>
             {
                 var subscription = pipe.Receive()
+                                       .ToObservable()
+                                       .Repeat()
                                        .Select(data => _adapter.Adapt(data))
                                        .Subscribe(o);
 

@@ -1,8 +1,5 @@
-﻿using System;
-using System.IO.Pipes;
+﻿using System.IO.Pipes;
 using System.Linq;
-using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 
 namespace Transport.Pipes
@@ -15,7 +12,7 @@ namespace Transport.Pipes
         public NamedPipeClient(string name)
         {
             Name = name;
-            _pipe = new NamedPipeClientStream(".", name, PipeDirection.InOut)
+            _pipe = new NamedPipeClientStream(".", name, PipeDirection.InOut, PipeOptions.Asynchronous)
             {
                 ReadMode = PipeTransmissionMode.Message
             };
@@ -30,22 +27,26 @@ namespace Transport.Pipes
 
         public void Connect()
         {
-            _pipe.Connect();
+            if (!_pipe.IsConnected)
+                _pipe.Connect();
         }
 
         public void Send(byte[] data)
         {
+            Connect();
+
             _pipe.Write(data, 0, data.Length);
         }
 
-        public IObservable<byte[]> Receive()
+        public async Task<byte[]> Receive()
         {
-            return Task.Factory
-                       .FromAsync((callback, state) => _pipe.BeginRead(_buffer, 0, _buffer.Length, callback, state),
-                                  result => _pipe.EndRead(result), this)
-                       .ToObservable()
-                       .Select(read => _buffer.Take(read).ToArray())
-                       .Repeat();
+            Connect();
+
+            var length = await Task.Factory
+                                   .FromAsync((callback, state) => _pipe.BeginRead(_buffer, 0, _buffer.Length, callback, state),
+                                              result => _pipe.EndRead(result), null);
+
+            return _buffer.Take(length).ToArray();
         }        
     }
 }

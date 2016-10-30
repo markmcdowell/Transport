@@ -1,8 +1,5 @@
-﻿using System;
-using System.IO.Pipes;
+﻿using System.IO.Pipes;
 using System.Linq;
-using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 
 namespace Transport.Pipes
@@ -38,18 +35,18 @@ namespace Transport.Pipes
                 _pipe.Write(data, 0, data.Length);
         }
 
-        public IObservable<byte[]> Receive()
+        public async Task<byte[]> Receive()
         {
-            return Task.Factory
-                       .FromAsync((callback, state) => _pipe.BeginWaitForConnection(callback, state),
-                                  result => _pipe.EndWaitForConnection(result), null)
-                       .ContinueWith(t => Task.Factory
-                                              .FromAsync((callback, state) => _pipe.BeginRead(_buffer, 0, _buffer.Length, callback, state),
-                                                         result => _pipe.EndRead(result), this))
-                       .Unwrap()
-                       .ToObservable()
-                       .Select(read => _buffer.Take(read).ToArray())
-                       .Repeat();
+            if (!_pipe.IsConnected)
+                await Task.Factory
+                          .FromAsync((callback, state) => _pipe.BeginWaitForConnection(callback, state),
+                                      result => _pipe.EndWaitForConnection(result), null);
+
+            var read = await Task.Factory
+                                 .FromAsync((callback, state) => _pipe.BeginRead(_buffer, 0, _buffer.Length, callback, state),
+                                                         result => _pipe.EndRead(result), null);
+
+            return _buffer.Take(read).ToArray();
         }
     }
 }
