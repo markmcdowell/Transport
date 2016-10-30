@@ -1,4 +1,5 @@
-﻿using System.IO.Pipes;
+﻿using System;
+using System.IO.Pipes;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,10 +13,11 @@ namespace Transport.Pipes
         public NamedPipeServer(string name)
         {
             Name = name;
-            _pipe = new NamedPipeServerStream(name, PipeDirection.InOut)
-            {
-                ReadMode = PipeTransmissionMode.Message
-            };
+            _pipe = new NamedPipeServerStream(name, 
+                                              PipeDirection.InOut, 
+                                              NamedPipeServerStream.MaxAllowedServerInstances,
+                                              PipeTransmissionMode.Message, 
+                                              PipeOptions.Asynchronous);
         }
 
         public void Dispose()
@@ -25,6 +27,8 @@ namespace Transport.Pipes
 
         public string Name { get; }
 
+        public event EventHandler<MessageEventArgs> MessageReceived;
+
         public void Connect()
         {
         }
@@ -33,21 +37,43 @@ namespace Transport.Pipes
         {
             if (_pipe.IsConnected)
             {
-                await Task.Factory.FromAsync((callback, state) => _pipe.BeginWrite(data, 0, data.Length, callback, state),
-                                             result => _pipe.EndWrite(result), null);
+                await Task.Factory.FromAsync((callback, state) => _pipe.BeginWrite(data, 0, data.Length, callback, state), result => _pipe.EndWrite(result), null);
             }
         }
 
-        public async Task<byte[]> Receive()
+        public void Receive()
         {
             if (!_pipe.IsConnected)
-                await Task.Factory.FromAsync((callback, state) => _pipe.BeginWaitForConnection(callback, state),
-                                             result => _pipe.EndWaitForConnection(result), null);
+                _pipe.BeginWaitForConnection(OnConnection, null);
+            else
+                _pipe.BeginRead(_buffer, 0, _buffer.Length, EndRead, null);
+        }
 
-            var read = await Task.Factory.FromAsync((callback, state) => _pipe.BeginRead(_buffer, 0, _buffer.Length, callback, state),
-                                                    result => _pipe.EndRead(result), null);
+        private void OnConnection(IAsyncResult result)
+        {
+            _pipe.EndWaitForConnection(result);
 
-            return _buffer.Take(read).ToArray();
+            _pipe.BeginRead(_buffer, 0, _buffer.Length, EndRead, null);
+        }
+
+        private void EndRead(IAsyncResult result)
+        {
+            var readLength = _pipe.EndRead(result);
+
+            if (_pipe.IsMessageComplete)
+            {
+                var message = _buffer.Take(readLength).ToArray();
+                MessageReceived?.Invoke(this, new MessageEventArgs(message));
+            }
+
+            if (_pipe.IsConnected)
+            {
+                _pipe.BeginRead(_buffer, 0, _buffer.Length, EndRead, null);
+            }
+            else
+            {
+                _pipe.BeginWaitForConnection(OnConnection, null);
+            }
         }
     }
 }

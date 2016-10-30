@@ -7,10 +7,12 @@ namespace Transport.Pipes
     {
         string Name { get; }
 
+        event EventHandler<MessageEventArgs> MessageReceived;
+
         void Connect();
 
         Task Send(byte[] data);
 
-        Task<byte[]> Receive();
+        void Receive();
     }
 }

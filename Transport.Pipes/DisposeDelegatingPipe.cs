@@ -22,6 +22,12 @@ namespace Transport.Pipes
 
         public string Name => _pipe.Name;
 
+        public event EventHandler<MessageEventArgs> MessageReceived
+        {
+            add { _pipe.MessageReceived += value; }
+            remove { _pipe.MessageReceived -= value; }
+        }
+
         public void Connect()
         {
             _pipe.Connect();
@@ -32,9 +38,9 @@ namespace Transport.Pipes
             return _pipe.Send(data);
         }
 
-        public Task<byte[]> Receive()
+        public void Receive()
         {
-            return _pipe.Receive();
-        }
+            _pipe.Receive();
+        }        
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Transport.Pipes
 {
@@ -27,6 +28,12 @@ namespace Transport.Pipes
 
         public string Name => _pipe.Name;
 
+        public event EventHandler<MessageEventArgs> MessageReceived
+        {
+            add { _pipe.MessageReceived += value; }
+            remove { _pipe.MessageReceived -= value; }
+        }
+
         public void Connect()
         {
             _pipe.Connect();
@@ -40,12 +47,12 @@ namespace Transport.Pipes
             return _pipe.Send(data);
         }
 
-        public Task<byte[]> Receive()
+        public void Receive()
         {
             lock (_gate)
                 ++_count;
 
-            return _pipe.Receive();
+            _pipe.Receive();
         }
     }
 }
