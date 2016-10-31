@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Transport.Core
+namespace Transport.Reactive.Observers
 {
     internal sealed class CompositeObserver<T> : IObserver<T>
     {

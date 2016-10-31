@@ -67,9 +67,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TopicTranslators\DelegatingTopicTranslator.cs" />
     <Compile Include="TransportExtensions.cs" />
-    <Compile Include="CompositeObserver.cs" />
     <Compile Include="Transports\CompositeTransport.cs" />
-    <Compile Include="ObserverExtensions.cs" />
     <Compile Include="Transports\ThrowOnNullOrEmptyTransport.cs" />
     <Compile Include="Transports\TopicTranslatingTransport.cs" />
   </ItemGroup>
@@ -77,6 +75,10 @@
     <ProjectReference Include="..\Transport.Interfaces\Transport.Interfaces.csproj">
       <Project>{C5D62CCD-B087-4937-8A6F-3845641894F1}</Project>
       <Name>Transport.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transport.Reactive\Transport.Reactive.csproj">
+      <Project>{FEC98804-C2A1-4E4A-9D8A-8688A233ED90}</Project>
+      <Name>Transport.Reactive</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

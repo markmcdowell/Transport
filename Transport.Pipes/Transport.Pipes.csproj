@@ -54,13 +54,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DisposeDelegatingPipe.cs" />
-    <Compile Include="FinallyObserver.cs" />
     <Compile Include="NamedPipeClient.cs" />
     <Compile Include="IPipe.cs" />
     <Compile Include="IPipeProvider.cs" />
     <Compile Include="NamedPipeServer.cs" />
     <Compile Include="NamedPipeServerTransportProvider.cs" />
-    <Compile Include="ObserverExtensions.cs" />
     <Compile Include="PipeConstants.cs" />
     <Compile Include="NamedPipeClientTransportProvider.cs" />
     <Compile Include="NamedPipeProvider.cs" />
@@ -77,6 +75,10 @@
     <ProjectReference Include="..\Transport.Interfaces\Transport.Interfaces.csproj">
       <Project>{C5D62CCD-B087-4937-8A6F-3845641894F1}</Project>
       <Name>Transport.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transport.Reactive\Transport.Reactive.csproj">
+      <Project>{FEC98804-C2A1-4E4A-9D8A-8688A233ED90}</Project>
+      <Name>Transport.Reactive</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

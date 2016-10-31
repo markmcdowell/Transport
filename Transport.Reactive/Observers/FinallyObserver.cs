@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Transport.Pipes
+namespace Transport.Reactive.Observers
 {
     internal sealed class FinallyObserver<T> : IObserver<T>
     {

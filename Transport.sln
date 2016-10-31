@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport.Pipes", "Transpor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport.Pipes.Tests", "Transport.Pipes.Tests\Transport.Pipes.Tests.csproj", "{C9E60BA5-20BE-4B20-949E-C6F5D67DCEDE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport.Reactive", "Transport.Reactive\Transport.Reactive.csproj", "{FEC98804-C2A1-4E4A-9D8A-8688A233ED90}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{C9E60BA5-20BE-4B20-949E-C6F5D67DCEDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9E60BA5-20BE-4B20-949E-C6F5D67DCEDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9E60BA5-20BE-4B20-949E-C6F5D67DCEDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEC98804-C2A1-4E4A-9D8A-8688A233ED90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEC98804-C2A1-4E4A-9D8A-8688A233ED90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEC98804-C2A1-4E4A-9D8A-8688A233ED90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEC98804-C2A1-4E4A-9D8A-8688A233ED90}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

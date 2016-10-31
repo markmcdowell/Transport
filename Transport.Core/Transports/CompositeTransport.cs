@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using Transport.Interfaces;
+using Transport.Reactive;
 
 namespace Transport.Core.Transports
 {

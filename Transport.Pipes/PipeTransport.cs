@@ -2,6 +2,7 @@
 using System.Reactive;
 using System.Reactive.Linq;
 using Transport.Interfaces;
+using Transport.Reactive;
 
 namespace Transport.Pipes
 {
