@@ -5,12 +5,17 @@ namespace Transport.Core.Transports
 {
     internal sealed class TopicTranslatingTransport<T> : ITransport<T>
     {
-        private readonly ITransport<T> _transportImplementation;
+        private readonly ITransport<T> _transport;
         private readonly ITopicTranslator _topicTranslator;
 
-        public TopicTranslatingTransport(ITransport<T> transportImplementation, ITopicTranslator topicTranslator)
+        public TopicTranslatingTransport(ITransport<T> transport, ITopicTranslator topicTranslator)
         {
-            _transportImplementation = transportImplementation;
+            if (transport == null)
+                throw new ArgumentNullException(nameof(transport));
+            if (topicTranslator == null)
+                throw new ArgumentNullException(nameof(topicTranslator));
+
+            _transport = transport;
             _topicTranslator = topicTranslator;
         }
 
@@ -18,14 +23,14 @@ namespace Transport.Core.Transports
         {
             var newTopic = _topicTranslator.Translate(topic);
 
-            return _transportImplementation.Observe(newTopic);
+            return _transport.Observe(newTopic);
         }
 
         public IObserver<T> Publish(string topic)
         {
             var newTopic = _topicTranslator.Translate(topic);
 
-            return _transportImplementation.Publish(newTopic);
+            return _transport.Publish(newTopic);
         }
     }
 }

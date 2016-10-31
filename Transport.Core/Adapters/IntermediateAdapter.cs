@@ -1,4 +1,5 @@
-﻿using Transport.Interfaces;
+﻿using System;
+using Transport.Interfaces;
 
 namespace Transport.Core.Adapters
 {
@@ -9,6 +10,11 @@ namespace Transport.Core.Adapters
 
         public IntermediateAdapter(IAdapter<TFrom, TIntermediate> firstAdapter, IAdapter<TIntermediate, TTo> secondAdapter)
         {
+            if (firstAdapter == null)
+                throw new ArgumentNullException(nameof(firstAdapter));
+            if (secondAdapter == null)
+                throw new ArgumentNullException(nameof(secondAdapter));
+
             _firstAdapter = firstAdapter;
             _secondAdapter = secondAdapter;
         }

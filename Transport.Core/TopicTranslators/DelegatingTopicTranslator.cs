@@ -3,12 +3,15 @@ using Transport.Interfaces;
 
 namespace Transport.Core.TopicTranslators
 {
-    public sealed class DelegatingTopicTranslator : ITopicTranslator
+    internal sealed class DelegatingTopicTranslator : ITopicTranslator
     {
         private readonly Func<string, string> _translateFunction;
 
         public DelegatingTopicTranslator(Func<string, string> translateFunction)
         {
+            if (translateFunction == null)
+                throw new ArgumentNullException(nameof(translateFunction));
+
             _translateFunction = translateFunction;
         }
 

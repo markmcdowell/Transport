@@ -7,7 +7,7 @@ using Transport.Interfaces;
 namespace Transport.Core
 {
     [Export(typeof(ITransportFactory))]
-    public sealed class CompositeTransportFactory : ITransportFactory
+    internal sealed class CompositeTransportFactory : ITransportFactory
     {
         private readonly IEnumerable<Lazy<ITransportProvider, ITransportMetadata>> _transports;
 

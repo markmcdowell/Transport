@@ -5,11 +5,14 @@ namespace Transport.Core.Transports
 {
     internal sealed class ThrowOnNullOrEmptyTransport<T> : ITransport<T>
     {
-        private readonly ITransport<T> _transportImplementation;
+        private readonly ITransport<T> _transport;
 
-        public ThrowOnNullOrEmptyTransport(ITransport<T> transportImplementation)
+        public ThrowOnNullOrEmptyTransport(ITransport<T> transport)
         {
-            _transportImplementation = transportImplementation;
+            if (transport == null)
+                throw new ArgumentNullException(nameof(transport));
+
+            _transport = transport;
         }
 
         public IObservable<T> Observe(string topic)
@@ -17,7 +20,7 @@ namespace Transport.Core.Transports
             if (string.IsNullOrEmpty(topic))
                 throw new ArgumentNullException(nameof(topic));
 
-            return _transportImplementation.Observe(topic);
+            return _transport.Observe(topic);
         }
 
         public IObserver<T> Publish(string topic)
@@ -25,7 +28,7 @@ namespace Transport.Core.Transports
             if (string.IsNullOrEmpty(topic))
                 throw new ArgumentNullException(nameof(topic));
 
-            return _transportImplementation.Publish(topic);
+            return _transport.Publish(topic);
         }
     }
 }

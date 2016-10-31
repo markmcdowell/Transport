@@ -7,12 +7,15 @@ using Transport.Reactive;
 
 namespace Transport.Core.Transports
 {
-    public sealed class CompositeTransport<T> : ITransport<T>
+    internal sealed class CompositeTransport<T> : ITransport<T>
     {
         private readonly IEnumerable<ITransport<T>> _transports;
 
         public CompositeTransport(IEnumerable<ITransport<T>> transports)
         {
+            if (transports == null)
+                throw new ArgumentNullException(nameof(transports));
+
             _transports = transports.ToList();
         }
 
