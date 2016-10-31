@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 namespace Transport.Pipes
 {
@@ -22,25 +21,19 @@ namespace Transport.Pipes
 
         public string Name => _pipe.Name;
 
-        public event EventHandler<MessageEventArgs> MessageReceived
-        {
-            add { _pipe.MessageReceived += value; }
-            remove { _pipe.MessageReceived -= value; }
-        }
-
         public void Connect()
         {
             _pipe.Connect();
         }
 
-        public Task Send(byte[] data)
+        public void Send(byte[] data)
         {
-            return _pipe.Send(data);
+            _pipe.Send(data);
         }
 
-        public void Receive()
+        public IObservable<byte[]> Receive()
         {
-            _pipe.Receive();
-        }        
+            return _pipe.Receive();
+        }
     }
 }

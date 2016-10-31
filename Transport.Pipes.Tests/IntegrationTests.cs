@@ -1,7 +1,5 @@
 ﻿using System;
 using System.ComponentModel.Composition.Hosting;
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
 using System.Threading;
 using Transport.Core;
 using Transport.Interfaces;

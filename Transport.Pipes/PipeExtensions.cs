@@ -14,5 +14,16 @@ namespace Transport.Pipes
         {
             return new RefCountedPipe(pipe);
         }
+
+        public static string GetPipeKey(this string name, PipeType pipeType)
+        {
+            return $"{name}/{pipeType}";
+        }
+
+        public static string GetPipeName(this string key)
+        {
+            var index = key.IndexOf("/", StringComparison.Ordinal);
+            return key.Substring(0, index + 1);
+        }
     }
 }
