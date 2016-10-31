@@ -24,7 +24,7 @@ namespace Transport.Pipes
 
             return pipe.Receive()
                        .Select(message => _adapter.Adapt(message))
-                       .Finally(() => pipe.Dispose());
+                       .Finally(pipe.Dispose);
         }
 
         public IObserver<T> Publish(string topic)
@@ -32,11 +32,12 @@ namespace Transport.Pipes
             var pipe = _pipeProvider.GetOrCreate(topic, _pipeType);
 
             return Observer.Create<T>(data =>
-            {
-                var bytes = _adapter.Adapt(data);
+                           {
+                               var bytes = _adapter.Adapt(data);
 
-                pipe.Send(bytes);
-            }, ex => pipe.Dispose(), () => pipe.Dispose());
+                               pipe.Send(bytes);
+                           })
+                           .Finally(pipe.Dispose);
         }
     }
 }

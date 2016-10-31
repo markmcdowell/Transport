@@ -54,11 +54,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DisposeDelegatingPipe.cs" />
+    <Compile Include="FinallyObserver.cs" />
     <Compile Include="NamedPipeClient.cs" />
     <Compile Include="IPipe.cs" />
     <Compile Include="IPipeProvider.cs" />
     <Compile Include="NamedPipeServer.cs" />
     <Compile Include="NamedPipeServerTransportProvider.cs" />
+    <Compile Include="ObserverExtensions.cs" />
     <Compile Include="PipeConstants.cs" />
     <Compile Include="NamedPipeClientTransportProvider.cs" />
     <Compile Include="NamedPipeProvider.cs" />
