@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Transport.Pipes.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Transport.Interfaces\Transport.Interfaces.csproj">
