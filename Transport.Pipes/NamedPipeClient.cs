@@ -25,6 +25,8 @@ namespace Transport.Pipes
 
         public string Name { get; }
 
+        public PipeType PipeType => PipeType.Client;
+
         public void Connect()
         {
             if (_pipe.IsConnected)

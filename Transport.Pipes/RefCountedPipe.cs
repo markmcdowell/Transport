@@ -27,6 +27,8 @@ namespace Transport.Pipes
 
         public string Name => _pipe.Name;
 
+        public PipeType PipeType => _pipe.PipeType;
+
         public void Connect()
         {
             _pipe.Connect();

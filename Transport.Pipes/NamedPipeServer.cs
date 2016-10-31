@@ -28,6 +28,8 @@ namespace Transport.Pipes
 
         public string Name { get; }
 
+        public PipeType PipeType => PipeType.Server;
+
         public void Connect()
         {
         }

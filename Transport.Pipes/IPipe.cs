@@ -6,6 +6,8 @@ namespace Transport.Pipes
     {
         string Name { get; }
 
+        PipeType PipeType { get; }
+
         void Connect();
 
         void Send(byte[] data);
