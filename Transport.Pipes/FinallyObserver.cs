@@ -9,6 +9,11 @@ namespace Transport.Pipes
 
         public FinallyObserver(IObserver<T> observer, Action finallyAction)
         {
+            if (observer == null)
+                throw new ArgumentNullException(nameof(observer));
+            if (finallyAction == null)
+                throw new ArgumentNullException(nameof(finallyAction));
+
             _observer = observer;
             _finallyAction = finallyAction;
         }
