@@ -17,7 +17,9 @@ namespace Transport.Pipes
 
         public ITransport<T> Create<T>(ITransportDetails<T> transportDetails)
         {
-            return new PipeTransport<T>(transportDetails.Adapter, _pipeProvider, PipeType.Server);
+            var transport = new PipeTransport<T>(transportDetails.Adapter, _pipeProvider, PipeType.Server);
+
+            return transport.ThrowOnInvalidTopic();
         }
     }
 }
