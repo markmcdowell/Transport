@@ -21,7 +21,7 @@ namespace Transport.Pipes.Tests
         public void ShouldBeAbleToCreateTransport()
         {
             var inProcessCatalog = new AssemblyCatalog(typeof(PipeTransport<>).Assembly);
-            var coreCatalog = new AssemblyCatalog(typeof(TransportExtensions).Assembly);
+            var coreCatalog = new AssemblyCatalog(typeof(KnownTransports).Assembly);
             var catalog = new AggregateCatalog(inProcessCatalog, coreCatalog);
 
             var container = new CompositionContainer(catalog, CompositionOptions.DisableSilentRejection);
