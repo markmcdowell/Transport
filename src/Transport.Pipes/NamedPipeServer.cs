@@ -56,7 +56,8 @@ namespace Transport.Pipes
         {
             _pipe.EndWaitForConnection(result);
 
-            _pipe.BeginRead(_buffer, 0, _buffer.Length, OnReadFinished, null);
+            if (_pipe.IsConnected)
+                _pipe.BeginRead(_buffer, 0, _buffer.Length, OnReadFinished, null);
         }
 
         private void OnWriteFinished(IAsyncResult result)
@@ -75,13 +76,9 @@ namespace Transport.Pipes
             }
 
             if (_pipe.IsConnected)
-            {
                 _pipe.BeginRead(_buffer, 0, _buffer.Length, OnReadFinished, null);
-            }
             else
-            {
                 _pipe.BeginWaitForConnection(OnConnection, null);
-            }
         }
     }
 }
