@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO.Pipes;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Reactive.Subjects;
 
 namespace Transport.Pipes
@@ -10,6 +11,7 @@ namespace Transport.Pipes
         private readonly ISubject<byte[]> _messages = new Subject<byte[]>();
         private readonly byte[] _buffer = new byte[1024 * 32];
         private readonly NamedPipeServerStream _pipe;
+        private readonly BooleanDisposable _disposable = new BooleanDisposable();
 
         public NamedPipeServer(string name)
         {
@@ -23,6 +25,7 @@ namespace Transport.Pipes
 
         public void Dispose()
         {
+            _disposable.Dispose();
             _pipe.Dispose();
         }
 
@@ -54,20 +57,31 @@ namespace Transport.Pipes
 
         private void OnConnection(IAsyncResult result)
         {
-            _pipe.EndWaitForConnection(result);
+            try
+            {
+                _pipe.EndWaitForConnection(result);
 
-            if (_pipe.IsConnected)
-                _pipe.BeginRead(_buffer, 0, _buffer.Length, OnReadFinished, null);
+                if (_pipe.IsConnected)
+                    _pipe.BeginRead(_buffer, 0, _buffer.Length, OnReadFinished, null);
+            }
+            catch (ObjectDisposedException)
+            {
+                if (!_disposable.IsDisposed)
+                    throw;
+            }
         }
 
         private void OnWriteFinished(IAsyncResult result)
-        {
+        {            
             _pipe.EndWrite(result);
         }
 
         private void OnReadFinished(IAsyncResult result)
         {
             var readLength = _pipe.EndRead(result);
+
+            if (_disposable.IsDisposed)
+                return;
 
             if (_pipe.IsMessageComplete)
             {
