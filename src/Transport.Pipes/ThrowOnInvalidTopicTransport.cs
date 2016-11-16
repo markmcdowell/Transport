@@ -14,16 +14,20 @@ namespace Transport.Pipes
 
         public IObservable<T> Observe(string topic)
         {
-            if (topic.StartsWith("/"))
-                throw new ArgumentOutOfRangeException(nameof(topic), "Pipe topics cannot start with /");
+            if (topic.StartsWith(@"/"))
+                throw new ArgumentOutOfRangeException(nameof(topic), @"Pipe topics cannot start with /");
+            if (topic.Contains(@"\"))
+                throw new ArgumentOutOfRangeException(nameof(topic), @"Pipe topics cannot contain a \");
 
             return _transport.Observe(topic);
         }
 
         public IObserver<T> Publish(string topic)
         {
-            if (topic.StartsWith("/"))
-                throw new ArgumentOutOfRangeException(nameof(topic), "Pipe topics cannot start with /");
+            if (topic.StartsWith(@"/"))
+                throw new ArgumentOutOfRangeException(nameof(topic), @"Pipe topics cannot start with /");
+            if (topic.Contains(@"\"))
+                throw new ArgumentOutOfRangeException(nameof(topic), @"Pipe topics cannot contain a \");
 
             return _transport.Publish(topic);
         }
