@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DisposeDelegatingPipe.cs" />
+    <Compile Include="IPipeState.cs" />
     <Compile Include="NamedPipeClient.cs" />
     <Compile Include="IPipe.cs" />
     <Compile Include="IPipeProvider.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="NamedPipeClientTransportProvider.cs" />
     <Compile Include="NamedPipeProvider.cs" />
     <Compile Include="PipeExtensions.cs" />
+    <Compile Include="PipeState.cs" />
     <Compile Include="PipeTransport.cs" />
     <Compile Include="PipeType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

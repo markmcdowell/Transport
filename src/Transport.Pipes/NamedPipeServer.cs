@@ -9,7 +9,6 @@ namespace Transport.Pipes
     internal sealed class NamedPipeServer : IPipe
     {
         private readonly ISubject<byte[]> _messages = new Subject<byte[]>();
-        private readonly byte[] _buffer = new byte[1024 * 32];
         private readonly NamedPipeServerStream _pipe;
         private readonly BooleanDisposable _disposable = new BooleanDisposable();
 
@@ -35,22 +34,20 @@ namespace Transport.Pipes
 
         public void Connect()
         {
+            if (_pipe.IsConnected)
+                return;
+
+            _pipe.BeginWaitForConnection(OnConnection, null);
         }
 
         public void Send(byte[] data)
         {
-            if (_pipe.IsConnected)
-            {
-                _pipe.BeginWrite(data, 0, data.Length, OnWriteFinished, null);
-            }
+            _pipe.BeginWrite(data, 0, data.Length, OnWriteFinished, null);
         }
 
         public IObservable<byte[]> Receive()
         {
-            if (!_pipe.IsConnected)
-                _pipe.BeginWaitForConnection(OnConnection, null);
-            else
-                _pipe.BeginRead(_buffer, 0, _buffer.Length, OnReadFinished, null);
+            Connect();
 
             return _messages;
         }
@@ -61,8 +58,11 @@ namespace Transport.Pipes
             {
                 _pipe.EndWaitForConnection(result);
 
-                if (_pipe.IsConnected)
-                    _pipe.BeginRead(_buffer, 0, _buffer.Length, OnReadFinished, null);
+                if (!_pipe.IsConnected)
+                    return;
+
+                var pipeState = new PipeState();
+                _pipe.BeginRead(pipeState.Buffer, 0, pipeState.Buffer.Length, OnReadFinished, pipeState);
             }
             catch (ObjectDisposedException)
             {
@@ -72,27 +72,32 @@ namespace Transport.Pipes
         }
 
         private void OnWriteFinished(IAsyncResult result)
-        {            
+        {
             _pipe.EndWrite(result);
         }
 
         private void OnReadFinished(IAsyncResult result)
         {
+            var pipeState = (IPipeState)result.AsyncState;
             var readLength = _pipe.EndRead(result);
 
             if (_disposable.IsDisposed)
                 return;
 
+            var intermediateMessage = pipeState.Buffer.Take(readLength);
+            pipeState.Message.AddRange(intermediateMessage);
+
             if (_pipe.IsMessageComplete)
             {
-                var message = _buffer.Take(readLength).ToArray();
+                var message = pipeState.Message.ToArray();
                 _messages.OnNext(message);
+                pipeState.Message.Clear();
             }
 
             if (_pipe.IsConnected)
-                _pipe.BeginRead(_buffer, 0, _buffer.Length, OnReadFinished, null);
+                _pipe.BeginRead(pipeState.Buffer, 0, pipeState.Buffer.Length, OnReadFinished, pipeState);
             else
-                _pipe.BeginWaitForConnection(OnConnection, null);
+                _pipe.BeginWaitForConnection(OnConnection, pipeState);
         }
     }
 }

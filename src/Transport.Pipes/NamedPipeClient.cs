@@ -10,7 +10,6 @@ namespace Transport.Pipes
     {
         private readonly ISubject<byte[]> _messages = new Subject<byte[]>();
         private readonly NamedPipeClientStream _pipe;
-        private readonly byte[] _buffer = new byte[1024 * 16];
         private readonly TimeSpan _timeout = TimeSpan.FromMinutes(1);
         private readonly BooleanDisposable _disposable = new BooleanDisposable();
 
@@ -50,7 +49,8 @@ namespace Transport.Pipes
         {
             Connect();
 
-            _pipe.BeginRead(_buffer, 0, _buffer.Length, OnReadFinished, null);
+            var pipeState = new PipeState();
+            _pipe.BeginRead(pipeState.Buffer, 0, pipeState.Buffer.Length, OnReadFinished, pipeState);
 
             return _messages;
         }
@@ -62,20 +62,25 @@ namespace Transport.Pipes
 
         private void OnReadFinished(IAsyncResult result)
         {
+            var pipeState = (IPipeState)result.AsyncState;
             var readLength = _pipe.EndRead(result);
 
             if (_disposable.IsDisposed)
                 return;
 
+            var message = pipeState.Buffer.Take(readLength);
+            pipeState.Message.AddRange(message);
+
             if (_pipe.IsMessageComplete)
             {
-                var message = _buffer.Take(readLength).ToArray();
-                _messages.OnNext(message);
+                var completeMessage = pipeState.Message.ToArray();
+                _messages.OnNext(completeMessage);
+                pipeState.Message.Clear();
             }
 
             if (_pipe.IsConnected)
             {
-                _pipe.BeginRead(_buffer, 0, _buffer.Length, OnReadFinished, null);
+                _pipe.BeginRead(pipeState.Buffer, 0, pipeState.Buffer.Length, OnReadFinished, null);
             }
         }
     }
